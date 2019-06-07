@@ -164,3 +164,42 @@ scaledData.count()
 scaledData.select("features", "MinMaxScalerFeatures","StandardScalerFeatures").show(false)
 ```
 
+# K-means
+Importar librerías
+```javascript
+import org.apache.spark.ml.clustering.KMeans
+import org.apache.spark.ml.evaluation.ClusteringEvaluator
+```
+StandardScaler
+```javascript
+val data = scaledData.select("StandardScalerFeatures","label").withColumnRenamed("StandardScalerFeatures","features")
+data.printSchema()
+data.count()
+data.show(2,false)
+```
+
+K = 3
+```javascript
+// Trains a k-means model.
+val kmeans = new KMeans().setK(3).setSeed(103L)
+val model = kmeans.fit(data)
+
+// Make predictions
+val predictions = model.transform(data)
+
+// Evaluate clustering by computing Silhouette score
+val evaluator = new ClusteringEvaluator()
+
+println("######################################################################")
+val silhouette = evaluator.evaluate(predictions)
+println(s"Silhouette with squared euclidean distance = $silhouette")
+println("######################################################################")
+// Shows the result.
+println("Cluster Centers: ")
+model.clusterCenters.foreach(println)
+println("######################################################################")
+predictions.groupBy("prediction").count().show
+println("######################################################################")
+predictions.show(5)
+```
+
