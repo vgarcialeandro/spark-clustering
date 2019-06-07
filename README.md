@@ -1,5 +1,5 @@
 # Clustering en Scala
-Importar Librerias
+#### Importar librerias
 ```javascript
 // crear Schema
 import org.apache.spark.sql.types._
@@ -7,7 +7,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 ```
 
-Crear Schema
+#### Crear schema
 ```javascript
 var schema = StructType(Array(
     StructField("sepal_length", DoubleType, true),
@@ -17,16 +17,16 @@ var schema = StructType(Array(
     StructField("label", StringType, true)))
 ```
 
-Importar Datos
+#### Importar datos
 ```javascript
 var dataset = spark.read.format("csv").
 option("header", "true").
 option("delimiter",";").
 schema(schema).
-load("/iris_v2.csv").
+load("iris_v2.csv").
 select("sepal_length","sepal_width","petal_length","petal_width", "label")
 ```
-Conteo de la data importada
+#### Conteo de la data importada
 ```javascript
 dataset.groupBy("label").count().show()
 +---------------+-----+ 
@@ -37,7 +37,7 @@ dataset.groupBy("label").count().show()
 |Iris-versicolor|   50| 
 +---------------+-----+
 ```
-Tipo de datos
+#### Tipo de datos
 ```javascript
 dataset.printSchema()
 root 
