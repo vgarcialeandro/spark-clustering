@@ -23,7 +23,7 @@ var dataset = spark.read.format("csv").
 option("header", "true").
 option("delimiter",";").
 schema(schema).
-load("iris_v2.csv").
+load("iris.csv").
 select("sepal_length","sepal_width","petal_length","petal_width", "label")
 ```
 #### Conteo de la data importada
