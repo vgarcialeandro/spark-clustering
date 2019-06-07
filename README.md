@@ -160,14 +160,13 @@ only showing top 5 rows
 ```
 
 ## StandardScaler
-Importar librerías
+#### Importar librerías
 ```javascript
 import org.apache.spark.ml.feature.MinMaxScaler
 import org.apache.spark.ml.linalg.Vectors
 ```
-StandardScaler
+#### StandardScaler
 ```javascript
-//val dataFrame = spark.read.format("libsvm").load("data/mllib/sample_libsvm_data.txt")
 val df_tmp = scaledData
 
 val scaler = new StandardScaler().setInputCol("MinMaxScalerFeatures").setOutputCol("StandardScalerFeatures").setWithStd(true).setWithMean(false)
@@ -178,8 +177,40 @@ val scalerModel = scaler.fit(df_tmp)
 // Normalize each feature to have unit standard deviation.
 val scaledData = scalerModel.transform(df_tmp)
 scaledData.count()
-scaledData.select("features", "MinMaxScalerFeatures","StandardScalerFeatures").show(false)
+scaledData.select("features", "MinMaxScalerFeatures","StandardScalerFeatures").show(5,false)
+
+df_tmp: org.apache.spark.sql.DataFrame = [sepal_length: double, sepal_width: double ... 5 more fields]
+scaler: org.apache.spark.ml.feature.StandardScaler = stdScal_91cd543651fc
+scalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_91cd543651fc
+scaledData: org.apache.spark.sql.DataFrame = [sepal_length: double, sepal_width: double ... 6 more fields]
+res47: Long = 150
++-----------------+--------------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+|features         |MinMaxScalerFeatures                                                            |StandardScalerFeatures                                                         |
++-----------------+--------------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+|[5.1,3.5,1.4,0.2]|[0.22222222222222213,0.6249999999999999,0.06779661016949151,0.04166666666666667]|[0.9661064170727516,3.459454980596082,0.22670333865826722,0.13103399393571005] |
+|[4.9,3.0,1.4,0.2]|[0.1666666666666668,0.41666666666666663,0.06779661016949151,0.04166666666666667]|[0.7245798128045645,2.3063033203973884,0.22670333865826722,0.13103399393571005]|
+|[4.7,3.2,1.3,0.2]|[0.11111111111111119,0.5,0.05084745762711865,0.04166666666666667]               |[0.4830532085363763,2.7675639844768662,0.17002750399370045,0.13103399393571005]|
+|[4.6,3.1,1.5,0.2]|[0.08333333333333327,0.4583333333333333,0.0847457627118644,0.04166666666666667] |[0.3622899064022817,2.5369336524371273,0.2833791733228341,0.13103399393571005] |
+|[5.0,3.6,1.4,0.2]|[0.19444444444444448,0.6666666666666666,0.06779661016949151,0.04166666666666667]|[0.8453431149386581,3.6900853126358215,0.22670333865826722,0.13103399393571005]|
++-----------------+--------------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+only showing top 5 rows
 ```
+Visulizar dataframe final
+```javascript
+scaledData.show
++------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
+|sepal_length|sepal_width|petal_length|petal_width|      label|         features|MinMaxScalerFeatures|StandardScalerFeatures|
++------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
+|         5.1|        3.5|         1.4|        0.2|Iris-setosa|[5.1,3.5,1.4,0.2]|[0.22222222222222...|  [0.96610641707275...|
+|         4.9|        3.0|         1.4|        0.2|Iris-setosa|[4.9,3.0,1.4,0.2]|[0.16666666666666...|  [0.72457981280456...|
+|         4.7|        3.2|         1.3|        0.2|Iris-setosa|[4.7,3.2,1.3,0.2]|[0.11111111111111...|  [0.48305320853637...|
+|         4.6|        3.1|         1.5|        0.2|Iris-setosa|[4.6,3.1,1.5,0.2]|[0.08333333333333...|  [0.36228990640228...|
+|         5.0|        3.6|         1.4|        0.2|Iris-setosa|[5.0,3.6,1.4,0.2]|[0.19444444444444...|  [0.84534311493865...|
++------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
+only showing top 5 rows
+```
+
+
 
 # K-means
 Importar librerías
