@@ -195,7 +195,7 @@ res47: Long = 150
 +-----------------+--------------------------------------------------------------------------------+-------------------------------------------------------------------------------+
 only showing top 5 rows
 ```
-Visulizar dataframe final
+#### Visulizar dataframe final
 ```javascript
 scaledData.show
 +------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
@@ -210,23 +210,34 @@ scaledData.show
 only showing top 5 rows
 ```
 
-
-
 # K-means
-Importar librerías
+#### Importar librerías
 ```javascript
 import org.apache.spark.ml.clustering.KMeans
 import org.apache.spark.ml.evaluation.ClusteringEvaluator
 ```
-StandardScaler
+#### Seleccionar data de entrada
 ```javascript
 val data = scaledData.select("StandardScalerFeatures","label").withColumnRenamed("StandardScalerFeatures","features")
 data.printSchema()
 data.count()
 data.show(2,false)
+
+data: org.apache.spark.sql.DataFrame = [features: vector, label: string]
+root
+ |-- features: vector (nullable = true)
+ |-- label: string (nullable = true)
+
+res52: Long = 150
++-------------------------------------------------------------------------------+-----------+
+|features                                                                       |label      |
++-------------------------------------------------------------------------------+-----------+
+|[0.9661064170727516,3.459454980596082,0.22670333865826722,0.13103399393571005] |Iris-setosa|
+|[0.7245798128045645,2.3063033203973884,0.22670333865826722,0.13103399393571005]|Iris-setosa|
++-------------------------------------------------------------------------------+-----------+
 ```
 
-K = 3
+#### Clustering K = 3
 ```javascript
 // Trains a k-means model.
 val kmeans = new KMeans().setK(3).setSeed(103L)
@@ -249,5 +260,66 @@ println("######################################################################"
 predictions.groupBy("prediction").count().show
 println("######################################################################")
 predictions.show(5)
+
+kmeans: org.apache.spark.ml.clustering.KMeans = kmeans_84192f933d92
+model: org.apache.spark.ml.clustering.KMeansModel = kmeans_84192f933d92
+predictions: org.apache.spark.sql.DataFrame = [features: vector, label: string ... 1 more field]
+evaluator: org.apache.spark.ml.evaluation.ClusteringEvaluator = cluEval_0851270c16ac
+######################################################################
+silhouette: Double = 0.653587550120595
+Silhouette with squared euclidean distance = 0.653587550120595
+######################################################################
+Cluster Centers: 
+[1.8524227952354766,1.5608731400546614,1.9391232003091075,1.7502397761412691]
+[0.8525889130667034,3.2703381083234975,0.2629758728435899,0.1886889512674225]
+[3.0273164148614913,2.584108038536165,2.5632934314201807,2.465821522244725]
+######################################################################
++----------+-----+
+|prediction|count|
++----------+-----+
+|         1|   50|
+|         2|   44|
+|         0|   56|
++----------+-----+
+
+######################################################################
++--------------------+-----------+----------+
+|            features|      label|prediction|
++--------------------+-----------+----------+
+|[0.96610641707275...|Iris-setosa|         1|
+|[0.72457981280456...|Iris-setosa|         1|
+|[0.48305320853637...|Iris-setosa|         1|
+|[0.36228990640228...|Iris-setosa|         1|
+|[0.84534311493865...|Iris-setosa|         1|
++--------------------+-----------+----------+
+only showing top 5 rows
+
 ```
 
+#### Validar grupos resultantes
+```javascript
+predictions.groupBy("label","prediction").count.show
+predictions.show(5,false)
+
++---------------+----------+-----+
+|          label|prediction|count|
++---------------+----------+-----+
+|    Iris-setosa|         1|   50|
+|Iris-versicolor|         2|   11|
+|Iris-versicolor|         0|   39|
+| Iris-virginica|         0|   17|
+| Iris-virginica|         2|   33|
++---------------+----------+-----+
+
++-------------------------------------------------------------------------------+-----------+----------+
+|features                                                                       |label      |prediction|
++-------------------------------------------------------------------------------+-----------+----------+
+|[0.9661064170727516,3.459454980596082,0.22670333865826722,0.13103399393571005] |Iris-setosa|1         |
+|[0.7245798128045645,2.3063033203973884,0.22670333865826722,0.13103399393571005]|Iris-setosa|1         |
+|[0.4830532085363763,2.7675639844768662,0.17002750399370045,0.13103399393571005]|Iris-setosa|1         |
+|[0.3622899064022817,2.5369336524371273,0.2833791733228341,0.13103399393571005] |Iris-setosa|1         |
+|[0.8453431149386581,3.6900853126358215,0.22670333865826722,0.13103399393571005]|Iris-setosa|1         |
++-------------------------------------------------------------------------------+-----------+----------+
+only showing top 5 rows
+
+```
