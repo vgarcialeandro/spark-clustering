@@ -29,6 +29,7 @@ select("sepal_length","sepal_width","petal_length","petal_width", "label")
 #### Conteo de la data importada
 ```javascript
 dataset.groupBy("label").count().show()
+|--------SALIDA-------|
 +---------------+-----+ 
 |          label|count| 
 +---------------+-----+ 
@@ -67,6 +68,7 @@ val output = assembler.transform(dataset)
 #### Validar resultados vector assembler
 ```javascript
 output.show(2)
+|------------------------------------SALIDA-------------------------------------|
 +------------+-----------+------------+-----------+-----------+-----------------+ 
 |sepal_length|sepal_width|petal_length|petal_width|      label|         features| 
 +------------+-----------+------------+-----------+-----------+-----------------+ 
@@ -81,6 +83,7 @@ output.show(2)
 output.
 select("sepal_length","sepal_width","petal_length","petal_width").
 describe().show()
+|--------------------------------------SALIDA----------------------------------------|
 +-------+------------------+-------------------+------------------+------------------+ 
 |summary|      sepal_length|        sepal_width|      petal_length|       petal_width| 
 +-------+------------------+-------------------+------------------+------------------+ 
@@ -111,8 +114,7 @@ import org.apache.spark.sql.Row
 ```javascript
 println(s"Pearson correlation matrix")
 val Row(coeff1: Matrix) = Correlation.corr(output.select("features"), "features").head
-//println(s"Pearson correlation matrix:\n $coeff1")
-
+|---------------------------------------SALIDA-----------------------------------------|
 Pearson correlation matrix
 coeff1: org.apache.spark.ml.linalg.Matrix = 
 1.0                   -0.10936924995062468  0.8717541573048866    0.8179536333691776
@@ -141,7 +143,7 @@ val scaledData = scalerModel.transform(df_tmp)
 println(s"Features scaled to range: [${scaler.getMin}, ${scaler.getMax}]")
 scaledData.count()
 scaledData.select("features", "MinMaxScalerFeatures").show(5,false)
-
+|-----------------------------------------------SALIDA-----------------------------------------------|
 df_tmp: org.apache.spark.sql.DataFrame = [sepal_length: double, sepal_width: double ... 4 more fields]
 scaler: org.apache.spark.ml.feature.MinMaxScaler = minMaxScal_1f3123d5ef9f
 scalerModel: org.apache.spark.ml.feature.MinMaxScalerModel = minMaxScal_1f3123d5ef9f
@@ -179,7 +181,7 @@ val scalerModel = scaler.fit(df_tmp)
 val scaledData = scalerModel.transform(df_tmp)
 scaledData.count()
 scaledData.select("features", "MinMaxScalerFeatures","StandardScalerFeatures").show(5,false)
-
+|-------------------------------------------------SALIDA-------------------------------------------------|
 df_tmp: org.apache.spark.sql.DataFrame = [sepal_length: double, sepal_width: double ... 5 more fields]
 scaler: org.apache.spark.ml.feature.StandardScaler = stdScal_91cd543651fc
 scalerModel: org.apache.spark.ml.feature.StandardScalerModel = stdScal_91cd543651fc
@@ -199,6 +201,7 @@ only showing top 5 rows
 #### Visualizar dataFrame final
 ```javascript
 scaledData.show
+|-----------------------------------------------------------SALIDA----------------------------------------------------------|
 +------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
 |sepal_length|sepal_width|petal_length|petal_width|      label|         features|MinMaxScalerFeatures|StandardScalerFeatures|
 +------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
@@ -223,7 +226,7 @@ val data = scaledData.select("StandardScalerFeatures","label").withColumnRenamed
 data.printSchema()
 data.count()
 data.show(2,false)
-
+|-------------------------------------------SALIDA------------------------------------------|
 data: org.apache.spark.sql.DataFrame = [features: vector, label: string]
 root
  |-- features: vector (nullable = true)
@@ -261,7 +264,7 @@ println("######################################################################"
 predictions.groupBy("prediction").count().show
 println("######################################################################")
 predictions.show(5)
-
+|---------------------------------------------SALIDA--------------------------------------------|
 kmeans: org.apache.spark.ml.clustering.KMeans = kmeans_84192f933d92
 model: org.apache.spark.ml.clustering.KMeansModel = kmeans_84192f933d92
 predictions: org.apache.spark.sql.DataFrame = [features: vector, label: string ... 1 more field]
@@ -301,7 +304,7 @@ only showing top 5 rows
 ```javascript
 predictions.groupBy("label","prediction").count.show
 predictions.show(5,false)
-
+|-------------SALIDA-------------|
 +---------------+----------+-----+
 |          label|prediction|count|
 +---------------+----------+-----+
