@@ -51,7 +51,7 @@ root
 
 ##  Modelo
 ###  VectorAssembler
-Imoportar Librerias
+Importar Librerias
 ```javascript
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
