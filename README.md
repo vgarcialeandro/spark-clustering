@@ -120,13 +120,13 @@ coeff1: org.apache.spark.ml.linalg.Matrix =
 0.8179536333691776    -0.35654408961379946  0.9627570970509658    1.0
 ```
 ## MinMaxScaler
-Importar librerías
+#### Importar librerías
 ```javascript
 import org.apache.spark.ml.feature.MinMaxScaler
 import org.apache.spark.ml.linalg.Vectors
 ```
 
-MinMaxScaler
+#### MinMaxScaler
 ```javascript
 val df_tmp = output
 
@@ -139,7 +139,24 @@ val scalerModel = scaler.fit(df_tmp)
 val scaledData = scalerModel.transform(df_tmp)
 println(s"Features scaled to range: [${scaler.getMin}, ${scaler.getMax}]")
 scaledData.count()
-scaledData.select("features", "MinMaxScalerFeatures").show(false)
+scaledData.select("features", "MinMaxScalerFeatures").show(5,false)
+
+df_tmp: org.apache.spark.sql.DataFrame = [sepal_length: double, sepal_width: double ... 4 more fields]
+scaler: org.apache.spark.ml.feature.MinMaxScaler = minMaxScal_1f3123d5ef9f
+scalerModel: org.apache.spark.ml.feature.MinMaxScalerModel = minMaxScal_1f3123d5ef9f
+scaledData: org.apache.spark.sql.DataFrame = [sepal_length: double, sepal_width: double ... 5 more fields]
+Features scaled to range: [0.0, 1.0]
+res29: Long = 150
++-----------------+---------------------------------------------------------------------------------+
+|features         |MinMaxScalerFeatures                                                             |
++-----------------+---------------------------------------------------------------------------------+
+|[5.1,3.5,1.4,0.2]|[0.22222222222222213,0.6249999999999999,0.06779661016949151,0.04166666666666667] |
+|[4.9,3.0,1.4,0.2]|[0.1666666666666668,0.41666666666666663,0.06779661016949151,0.04166666666666667] |
+|[4.7,3.2,1.3,0.2]|[0.11111111111111119,0.5,0.05084745762711865,0.04166666666666667]                |
+|[4.6,3.1,1.5,0.2]|[0.08333333333333327,0.4583333333333333,0.0847457627118644,0.04166666666666667]  |
+|[5.0,3.6,1.4,0.2]|[0.19444444444444448,0.6666666666666666,0.06779661016949151,0.04166666666666667] |
++-----------------+---------------------------------------------------------------------------------+
+only showing top 5 rows
 ```
 
 ## StandardScaler
