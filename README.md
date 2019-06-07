@@ -51,21 +51,20 @@ root
 
 ##  Modelo
 ###  VectorAssembler
-Importar Librerias
+#### Importar librerias
 ```javascript
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.linalg.Vectors
 ```
-Seleccionar variables para el vector assembler
+#### Seleccionar variables para el vector assembler
 ```javascript
 val assembler = new VectorAssembler().
 setInputCols(Array("sepal_length", "sepal_width", "petal_length", "petal_width")).
-//setInputCols(Array("sepal_length", "sepal_width")).
 setOutputCol("features")
 
 val output = assembler.transform(dataset)
 ```
-validar resultados vector assembler
+#### validar resultados vector assembler
 ```javascript
 output.show(2)
 +------------+-----------+------------+-----------+-----------+-----------------+ 
@@ -76,7 +75,8 @@ output.show(2)
 +------------+-----------+------------+-----------+-----------+-----------------+
 ```
 
-###  Basic Statistics
+##  Basic Statistics
+#### Descriptivos
 ```javascript
 output.
 select("sepal_length","sepal_width","petal_length","petal_width").
@@ -92,7 +92,7 @@ describe().show()
 +-------+------------------+-------------------+------------------+------------------+
 ```
 
-###  Percentiles
+####  Percentiles
 ```javascript
 output.stat.approxQuantile("sepal_length",Array(0.25,0.5,0.75),0.0)
 output.stat.approxQuantile("sepal_width",Array(0.25,0.5,0.75),0.0)
@@ -100,24 +100,24 @@ output.stat.approxQuantile("petal_length",Array(0.25,0.5,0.75),0.0)
 output.stat.approxQuantile("petal_width",Array(0.25,0.5,0.75),0.0)
 ```
 ## Correlation
-Imoportar Librerias
+#### Importar Librerias
 ```javascript
 import org.apache.spark.ml.linalg.{Matrix, Vectors}
 import org.apache.spark.ml.stat.Correlation
 import org.apache.spark.sql.Row
 ```
 
-Pearson correlation matrix
+#### Pearson correlation matrix
 ```javascript
 println(s"Pearson correlation matrix")
 val Row(coeff1: Matrix) = Correlation.corr(output.select("features"), "features").head
 //println(s"Pearson correlation matrix:\n $coeff1")
 
 coeff1: org.apache.spark.ml.linalg.Matrix = 
-1.0 -0.10936924995062468 0.8717541573048866 0.8179536333691776 
--0.10936924995062468 1.0 -0.42051609640115817 -0.35654408961379946 
-0.8717541573048866 -0.42051609640115817 1.0 0.9627570970509658 
-0.8179536333691776 -0.35654408961379946 0.9627570970509658 1.0
+1.0                   -0.10936924995062468  0.8717541573048866    0.8179536333691776
+-0.10936924995062468  1.0                   -0.42051609640115817  -0.35654408961379946
+0.8717541573048866    -0.42051609640115817  1.0                   0.9627570970509658
+0.8179536333691776    -0.35654408961379946  0.9627570970509658    1.0
 ```
 ## MinMaxScaler
 Importar librerías
