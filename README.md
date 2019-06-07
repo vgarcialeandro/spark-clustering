@@ -1,5 +1,5 @@
 # Clustering en Scala
-Imoportar Librerias
+Importar Librerias
 ```javascript
 // crear Schema
 import org.apache.spark.sql.types._
