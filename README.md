@@ -64,7 +64,7 @@ setOutputCol("features")
 
 val output = assembler.transform(dataset)
 ```
-#### validar resultados vector assembler
+#### Validar resultados vector assembler
 ```javascript
 output.show(2)
 +------------+-----------+------------+-----------+-----------+-----------------+ 
@@ -100,19 +100,20 @@ output.stat.approxQuantile("petal_length",Array(0.25,0.5,0.75),0.0)
 output.stat.approxQuantile("petal_width",Array(0.25,0.5,0.75),0.0)
 ```
 ## Correlation
-#### Importar Librerias
+#### Importar librerias
 ```javascript
 import org.apache.spark.ml.linalg.{Matrix, Vectors}
 import org.apache.spark.ml.stat.Correlation
 import org.apache.spark.sql.Row
 ```
 
-#### Pearson correlation matrix
+#### Matriz de correlacion de pearson
 ```javascript
 println(s"Pearson correlation matrix")
 val Row(coeff1: Matrix) = Correlation.corr(output.select("features"), "features").head
 //println(s"Pearson correlation matrix:\n $coeff1")
 
+Pearson correlation matrix
 coeff1: org.apache.spark.ml.linalg.Matrix = 
 1.0                   -0.10936924995062468  0.8717541573048866    0.8179536333691776
 -0.10936924995062468  1.0                   -0.42051609640115817  -0.35654408961379946
@@ -120,7 +121,7 @@ coeff1: org.apache.spark.ml.linalg.Matrix =
 0.8179536333691776    -0.35654408961379946  0.9627570970509658    1.0
 ```
 ## MinMaxScaler
-#### Importar librerías
+#### Importar librerias
 ```javascript
 import org.apache.spark.ml.feature.MinMaxScaler
 import org.apache.spark.ml.linalg.Vectors
@@ -195,7 +196,7 @@ res47: Long = 150
 +-----------------+--------------------------------------------------------------------------------+-------------------------------------------------------------------------------+
 only showing top 5 rows
 ```
-#### Visulizar dataframe final
+#### Visualizar dataFrame final
 ```javascript
 scaledData.show
 +------------+-----------+------------+-----------+-----------+-----------------+--------------------+----------------------+
@@ -211,7 +212,7 @@ only showing top 5 rows
 ```
 
 # K-means
-#### Importar librerías
+#### Importar librerias
 ```javascript
 import org.apache.spark.ml.clustering.KMeans
 import org.apache.spark.ml.evaluation.ClusteringEvaluator
